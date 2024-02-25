@@ -30,7 +30,7 @@ export default function AuthTemplate() {
     <div className="flex h-full items-center justify-center">
       <Card className="fle x-1 w-full max-w-[80vw] p-12">
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel className="flex">
+          <ResizablePanel className="flex justify-center">
             <AuthImage />
           </ResizablePanel>
           <ResizableHandle withHandle />
