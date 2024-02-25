@@ -13,6 +13,6 @@ export default function Layout() {
     if (isTokenExpired(accessToken) || !accessToken) {
       refreshToken();
     }
-  }, [accessToken]);
+  }, [accessToken, refreshToken]);
   return <LayoutTemplate />;
 }
