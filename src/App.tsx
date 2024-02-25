@@ -7,7 +7,7 @@ import Router from '@/router';
 function App() {
   return (
     <RecoilRoot>
-      <ToastContainer />
+      <ToastContainer pauseOnFocusLoss={false} />
       <Router />
     </RecoilRoot>
   );
