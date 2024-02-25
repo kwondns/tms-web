@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import LayoutTemplate from '@/templates/Layout.template';
 import { AuthAtom } from '@/stores/auth.store';
 import { useRefresh } from '@/hooks/useAuth';
-import { isTokenExpired } from '@/lib/token';
+import isTokenExpired from '@/lib/token';
 
 export default function Layout() {
   const accessToken = useRecoilValue(AuthAtom);
