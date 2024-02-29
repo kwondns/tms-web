@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Auth from '@/pages/Auth';
 import Layout from '@/pages/Layout';
-import Dashboard from '@/pages/Dashboard';
+import Route from '@/constants/route.constant';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,8 +20,12 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, caseSensitive: true, element: <Auth /> },
-      { path: 'dashboard', element: <Dashboard /> },
+      {
+        index: true,
+        caseSensitive: true,
+        element: <Auth />,
+      },
+      ...Object.entries(Route).map(([path, element]) => ({ path, element })),
     ],
   },
 ]);
