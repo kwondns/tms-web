@@ -1,5 +1,5 @@
 import StackByTech from '@/components/StackByTech';
-import { StackGetType } from '@/types/portfolio/stack.type';
+import { StackGetType } from '@/types/PortFolio/stack.type';
 import StackCreate from '@/components/StackCreate';
 
 export default function PortFolioStackTemplate({ stacks }: { stacks: StackGetType }) {

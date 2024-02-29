@@ -1,5 +1,5 @@
-import { useGetStack } from '@/hooks/useStack';
-import PortFolioStackTemplate from '@/templates/PortFolioStack.template';
+import { useGetStack } from '@/hooks/PortFolio/useStack';
+import PortFolioStackTemplate from '@/templates/PortFolio/PortFolioStack.template';
 
 export default function PortFolioStack() {
   const { data } = useGetStack();

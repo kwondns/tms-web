@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import Img from './Img';
-import { StackType } from '@/types/portfolio/stack.type';
+import { StackType } from '@/types/PortFolio/stack.type';
 
 export default function Stack(props: Omit<StackType, 'category'>) {
   const { name, url, img } = props;

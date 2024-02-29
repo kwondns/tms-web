@@ -1,5 +1,5 @@
 import Stack from '@/components/stack';
-import { StacksType } from '@/types/portfolio/stack.type';
+import { StacksType } from '@/types/PortFolio/stack.type';
 
 export default function StackByCategory(props: StacksType) {
   const { category, img, url, name } = props;

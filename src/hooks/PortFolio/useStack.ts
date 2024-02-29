@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 
 import { GetFetch, PostFetch } from '@/lib/fetch';
-import { StackGetType, StackType } from '@/types/portfolio/stack.type';
+import { StackGetType, StackType } from '@/types/PortFolio/stack.type';
 import { AuthAtom } from '@/stores/auth.store';
 
 export const useGetStack = () =>

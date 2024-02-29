@@ -1,4 +1,4 @@
-import PortFolioStack from '@/pages/PortFolioStack';
+import PortFolioStack from '@/pages/PortFolio/PortFolioStack';
 
 export default {
   '/portfolio/profile': <div />,

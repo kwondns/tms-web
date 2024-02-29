@@ -1,5 +1,5 @@
 import StackByCategory from '@/components/StackByCategory';
-import { StacksType } from '@/types/portfolio/stack.type';
+import { StacksType } from '@/types/PortFolio/stack.type';
 
 type StackByTechProps = {
   data: StacksType[];
