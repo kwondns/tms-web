@@ -56,3 +56,33 @@ export const PutFetch = async <B, R>(url: string, body: B, accessToken?: string)
   });
   return resultHandler(result);
 };
+
+export const DeleteFetch = async <B, R>(url: string, body: B, accessToken?: string): Promise<R> => {
+  const headers = { 'Content-type': 'application/json' };
+  if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
+  const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
+    method: 'Delete',
+    headers,
+    body: JSON.stringify(body),
+  });
+  return resultHandler(result);
+};
+
+export const FileUpload = async (target: string, payload: File[] | File, accessToken?: string, uri?: string) => {
+  const formData = new FormData();
+
+  if (payload instanceof Array) payload.forEach((file, index) => formData.append(`file-${index}`, file));
+  else formData.append('file', payload);
+
+  if (uri) formData.append('uri', `${uri}/`);
+
+  const headers = {};
+  if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
+
+  const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/upload/${target}`, {
+    method: 'POST',
+    headers,
+    body: formData,
+  });
+  return resultHandler(result);
+};
