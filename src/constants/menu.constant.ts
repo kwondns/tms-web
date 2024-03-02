@@ -1,10 +1,5 @@
 export const PortfolioContent: { title: string; href: string; description: string }[] = [
   {
-    title: 'Profile',
-    href: '/portfolio/profile',
-    description: '프로필 수정',
-  },
-  {
     title: 'Stack',
     href: '/portfolio/stack',
     description: '스택 수정 및 추가',
