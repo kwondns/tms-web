@@ -1,24 +1,32 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
-import { GetFetch, PostFetch } from '@/lib/fetch';
-import { StackGetType, StackType } from '@/types/PortFolio/stack.type';
+import { DeleteFetch, FileUpload, GetFetch, PostFetch } from '@/lib/fetch';
+import { StackCreateType, StackGetType, StackType } from '@/types/PortFolio/stack.type';
 import { AuthAtom } from '@/stores/auth.store';
 
 export const useGetStack = () =>
   useQuery({ queryKey: ['stack', 'all'], queryFn: async () => GetFetch<StackGetType>('port/stack') });
 
 export const useCreateStack = () => {
+  const [deleteImage, setDeleteImage] = useState('');
   const accessToken = useRecoilValue(AuthAtom);
   const queryClient = useQueryClient();
   const { mutate: createStack, isPending } = useMutation({
-    mutationFn: async (payload: StackType & { tech: 'front' | 'back' | 'etc' }) =>
-      PostFetch<StackType, StackType>(`port/stack/${payload.tech}`, payload, accessToken),
+    mutationFn: async (payload: StackCreateType) => {
+      const { img, ...rest } = payload;
+      const uploadResult = await FileUpload('port', img, accessToken, 'stack');
+      setDeleteImage(uploadResult[0]);
+      const body = { ...rest, img: uploadResult[0] as string };
+      await PostFetch<StackType, StackType>(`port/stack/${payload.tech}`, body, accessToken);
+    },
     onMutate: () => {
       toast('스택 생성중...', { autoClose: false, toastId: 'stack' });
     },
-    onError: (error) => {
+    onError: async (error) => {
+      await DeleteFetch<{ target: string }, never>(`upload/delete`, { target: deleteImage }, accessToken);
       toast.update('stack', { render: error.message, autoClose: 3000, type: 'error' });
     },
     onSuccess: async () => {

@@ -16,3 +16,11 @@ export type StackType = {
   img: string;
   category: string;
 };
+
+export type StackCreateType = {
+  name: string;
+  url: string;
+  img: File;
+  category: string;
+  tech: 'front' | 'back' | 'etc';
+};
