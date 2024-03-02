@@ -38,6 +38,7 @@ export const PostFetch = async <B, R>(url: string, body: B, accessToken?: string
     method: 'POST',
     headers,
     body: JSON.stringify(body),
+    credentials: 'include',
   });
   return resultHandler(result);
 };
