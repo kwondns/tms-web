@@ -21,13 +21,21 @@ const resultHandler = async (result: Response) => {
     }
   }
 };
+export const RefreshFetch = async <R>(url: string): Promise<R> => {
+  const headers = { 'Content-type': 'application/json' };
+  const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+  });
+  return resultHandler(result);
+};
 
 export const PostFetch = async <B, R>(url: string, body: B, accessToken?: string): Promise<R> => {
   const headers = { 'Content-type': 'application/json' };
   if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
   const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
     method: 'POST',
-    credentials: 'include',
     headers,
     body: JSON.stringify(body),
   });
@@ -39,7 +47,6 @@ export const GetFetch = async <T>(url: string, accessToken?: string): Promise<T>
   if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
   const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
     method: 'GET',
-    credentials: 'include',
     headers,
   });
   return resultHandler(result);
@@ -50,7 +57,6 @@ export const PutFetch = async <B, R>(url: string, body: B, accessToken?: string)
   if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
   const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
     method: 'PUT',
-    credentials: 'include',
     headers,
     body: JSON.stringify(body),
   });
