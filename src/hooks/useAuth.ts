@@ -4,7 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthType } from '@/types/auth.type';
-import { GetFetch, PostFetch } from '@/lib/fetch';
+import { GetFetch, PostFetch, RefreshFetch } from '@/lib/fetch';
 import { AuthAtom } from '@/stores/auth.store';
 
 type AccessTokenType = {
@@ -46,7 +46,7 @@ export const useRefresh = () => {
   const setAuth = useSetRecoilState(AuthAtom);
   const navigate = useNavigate();
   const { mutate: refreshToken } = useMutation({
-    mutationFn: async () => PostFetch<object, AuthResponseType>(`admin/refresh`, {}),
+    mutationFn: async () => RefreshFetch<AuthResponseType>(`admin/refresh`),
     onSuccess: async (data) => {
       setAuth(data.accessToken);
     },
