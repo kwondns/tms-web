@@ -34,7 +34,6 @@ export const useUpdateProject = () => {
         const body = { ...rest, preview_image: uploadResult[0] as string };
         await PutFetch<ProjectType, ProjectType>(`port/project/${payload.id}`, body, accessToken);
       } else {
-        console.log(payload);
         await PutFetch<ProjectUpdateType, ProjectType>(`port/project/${payload.id}`, payload, accessToken);
       }
     },
@@ -43,7 +42,7 @@ export const useUpdateProject = () => {
     },
     onError: async (error) => {
       try {
-        await DeleteFetch<{ target: string }, never>(`upload/delete`, { target: deleteImage }, accessToken);
+        await DeleteFetch<{ target: string }, never>(`upload/port`, { target: deleteImage }, accessToken);
       } finally {
         toast.update('project_edit', { render: error.message, autoClose: 3000, type: 'error' });
       }
@@ -51,7 +50,7 @@ export const useUpdateProject = () => {
     onSuccess: async (_, variables) => {
       toast.update('project_edit', { render: '프로젝트를 수정했습니다!', autoClose: 1500, type: 'success' });
       if (variables.previousImage)
-        await DeleteFetch<{ target: string }, never>(`upload/delete`, { target: variables.previousImage }, accessToken);
+        await DeleteFetch<{ target: string }, never>(`upload/port`, { target: variables.previousImage }, accessToken);
       await queryClient.invalidateQueries({ queryKey: ['project', variables.payload.id] });
       navigate('/portfolio/project');
     },
@@ -77,7 +76,7 @@ export const useCreateProject = () => {
       toast('프로젝트 생성중...', { autoClose: false, toastId: 'project' });
     },
     onError: async (error) => {
-      await DeleteFetch<{ target: string }, never>(`upload/delete`, { target: deleteImage }, accessToken);
+      await DeleteFetch<{ target: string }, never>(`upload/port`, { target: deleteImage }, accessToken);
       toast.update('project', { render: error.message, autoClose: 3000, type: 'error' });
     },
     onSuccess: async () => {

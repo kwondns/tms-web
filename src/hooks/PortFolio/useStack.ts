@@ -26,7 +26,7 @@ export const useCreateStack = () => {
       toast('스택 생성중...', { autoClose: false, toastId: 'stack' });
     },
     onError: async (error) => {
-      await DeleteFetch<{ target: string }, never>(`upload/delete`, { target: deleteImage }, accessToken);
+      await DeleteFetch<{ target: string }, never>(`upload/stack`, { target: deleteImage }, accessToken);
       toast.update('stack', { render: error.message, autoClose: 3000, type: 'error' });
     },
     onSuccess: async () => {
