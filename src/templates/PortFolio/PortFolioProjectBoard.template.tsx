@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ProjectType } from '@/types/PortFolio/project.type';
+import Img from '@/components/Img';
 
 type PortFolioProjectBoardTemplateProps = { projects: ProjectType[] };
 export default function PortFolioProjectBoardTemplate(props: PortFolioProjectBoardTemplateProps) {
@@ -29,7 +30,7 @@ export default function PortFolioProjectBoardTemplate(props: PortFolioProjectBoa
             <TableCell className="font-medium">{project.title}</TableCell>
             <TableCell>{project.shorten_content}</TableCell>
             <TableCell>
-              <img className="max-h-[80px]" src={project.preview_image} alt={project.preview_image} />
+              <Img className="max-h-[80px]" src={project.preview_image} alt={project.preview_image} />
             </TableCell>
             <TableCell className="text-right">{project.date}</TableCell>
           </TableRow>

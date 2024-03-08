@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { ProjectType } from '@/types/PortFolio/project.type';
+import Img from '@/components/Img';
 
 type PortFolioProjectTemplateProps = {
   defaultProject?: ProjectType;
@@ -164,7 +165,7 @@ export default function PortFolioProjectTemplate(props: PortFolioProjectTemplate
             )}
             name="preview_image"
           />
-          {previewImage && <img className="max-h-[100px] object-contain" src={previewImage} alt="preview" />}
+          {previewImage && <Img className="max-h-[100px] object-contain" src={previewImage} alt="preview" />}
           <div className="flex">
             <Label className="flex-1">Front-Tag</Label>
             <Label className="flex-1">Back-Tag</Label>
