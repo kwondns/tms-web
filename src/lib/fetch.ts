@@ -81,7 +81,7 @@ export const FileUpload = async (target: string, payload: File[] | File, accessT
   if (payload instanceof Array) payload.forEach((file, index) => formData.append(`file-${index}`, file));
   else formData.append('file', payload);
 
-  if (uri) formData.append('uri', `${uri}/`);
+  if (uri) formData.append('uri', `${uri.replaceAll(' ', '_').replaceAll('(', '<').replaceAll(')', '>')}/`);
 
   const headers = {};
   if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
@@ -90,6 +90,7 @@ export const FileUpload = async (target: string, payload: File[] | File, accessT
     method: 'POST',
     headers,
     body: formData,
+    credentials: 'include',
   });
   return resultHandler(result);
 };
