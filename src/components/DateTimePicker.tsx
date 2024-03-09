@@ -15,26 +15,27 @@ type DateTimePickerProps = {
 export default function DateTimePicker(props: DateTimePickerProps) {
   const { form, name } = props;
   const dateTime = form.getValues(name);
-  const [selected, setSelected] = useState<Date>(new Date(dateTime));
-  const [time, setTime] = useState(dateTime.split('T')[1].replace('Z', ''));
-
+  const [selected, setSelected] = useState<Date>(dateTime ? new Date(dateTime) : new Date());
+  const [time, setTime] = useState(dateTime ? dateTime.split('T')[1].replace('Z', '') : '00:00');
   const handleTimeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const time = e.target.value;
     if (!selected) {
       setTime(time);
       return;
     }
-    const [hours, minutes, seconds] = time.split(':').map((str: string) => parseInt(str, 10));
+    const [hours, minutes] = time.split(':').map((str: string) => parseInt(str, 10));
+    let targetDate: Date;
+    if (selected) targetDate = selected;
+    else targetDate = new Date();
     const newSelectedDate = new Date(
-      selected.getFullYear(),
-      selected.getMonth(),
-      selected.getDate(),
+      targetDate.getFullYear(),
+      targetDate.getMonth(),
+      targetDate.getDate(),
       hours,
       minutes,
-      seconds,
     );
     setSelected(newSelectedDate);
-    const newDate = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate(), hours, minutes, seconds);
+    const newDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), hours, minutes);
     form.setValue(name, newDate.toISOString());
     setTime(time);
   };
@@ -42,8 +43,8 @@ export default function DateTimePicker(props: DateTimePickerProps) {
     if (!time || !date) {
       return;
     }
-    const [hours, minutes, seconds] = time.split(':').map((str: string) => parseInt(str, 10));
-    const newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, seconds);
+    const [hours, minutes] = time.split(':').map((str: string) => parseInt(str, 10));
+    const newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
     setSelected(newDate);
     form.setValue(name, newDate.toISOString());
   };
