@@ -75,13 +75,20 @@ export const DeleteFetch = async <B, R>(url: string, body: B, accessToken?: stri
   return resultHandler(result);
 };
 
-export const FileUpload = async (target: string, payload: File[] | File, accessToken?: string, uri?: string) => {
+export const FileUpload = async (
+  target: string,
+  payload: File[] | File,
+  num?: number,
+  accessToken?: string,
+  uri?: string,
+) => {
   const formData = new FormData();
 
   if (payload instanceof Array) payload.forEach((file, index) => formData.append(`file-${index}`, file));
   else formData.append('file', payload);
 
   if (uri) formData.append('uri', `${uri.replaceAll(' ', '_').replaceAll('(', '<').replaceAll(')', '>')}/`);
+  formData.append('num', num ? String(num) : '1');
 
   const headers = {};
   if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
