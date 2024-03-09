@@ -6,7 +6,7 @@ import { useGetPast } from '@/hooks/TimeLine/usePast';
 import { PastDataAtom, PastSelector } from '@/stores/TimeLine/past.store';
 import QueryHandler from '@/components/QueryHandler';
 
-export default function TimelinePast() {
+export default function TimeLinePast() {
   const prev = useRecoilValue(PastSelector);
   const setData = useSetRecoilState(PastDataAtom);
   const { data, isLoading, isError } = useGetPast(prev);

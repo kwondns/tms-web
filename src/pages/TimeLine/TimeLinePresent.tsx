@@ -2,7 +2,7 @@ import { useGetPresent, useSocketPresent } from '@/hooks/TimeLine/usePresent';
 import QueryHandler from '@/components/QueryHandler';
 import TimeLinePresentTemplate from '@/templates/TimeLine/TimeLinePresent.template';
 
-export default function TimelinePresent() {
+export default function TimeLinePresent() {
   const { data, isLoading, isError } = useGetPresent();
   useSocketPresent();
   return data === undefined ? null : (

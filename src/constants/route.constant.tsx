@@ -9,9 +9,9 @@ const PortFolioStack = lazy(() => import('pages/PortFolio/PortFolioStack'));
 const PortFolioNewProject = lazy(() => import('pages/PortFolio/PortFolioNewProject'));
 const PortFolioProjectBoard = lazy(() => import('pages/PortFolio/PortFolioProjectBoard'));
 const PortFolioEditProject = lazy(() => import('pages/PortFolio/PortfolioEditProject'));
-const TimeLinePast = lazy(() => import('pages/TimeLine/TimelinePast'));
-const TimeLineEditPast = lazy(() => import('pages/TimeLine/TimelineEditPast'));
-const TimeLinePresent = lazy(() => import('pages/TimeLine/TimelinePresent'));
+const TimeLinePast = lazy(() => import('@/pages/TimeLine/TimeLinePast'));
+const TimeLineEditPast = lazy(() => import('@/pages/TimeLine/TimeLineEditPast'));
+const TimeLinePresent = lazy(() => import('@/pages/TimeLine/TimeLinePresent'));
 const TimeLineFuture = lazy(() => import('pages/Dashboard'));
 const BlogNewPost = lazy(() => import('pages/Dashboard'));
 export const route: RouteObject[] = [
