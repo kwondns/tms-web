@@ -78,9 +78,9 @@ export const DeleteFetch = async <B, R>(url: string, body: B, accessToken?: stri
 export const FileUpload = async (
   target: string,
   payload: File[] | File,
-  num?: number,
   accessToken?: string,
   uri?: string,
+  num?: number,
 ) => {
   const formData = new FormData();
 

@@ -9,7 +9,7 @@ import { FileUpload } from '@/lib/fetch';
 async function fileUpload(file: File, target: string, num: number, accessToken: string, uri: string) {
   toast('이미지 업로드 중...', { toastId: 'uploadImage', autoClose: false });
   try {
-    const uploadResult = await FileUpload(target, file, num, accessToken, uri);
+    const uploadResult = await FileUpload(target, file, accessToken, uri, num);
     toast.update('uploadImage', { type: 'success', render: '업로드 완료!', autoClose: 1500 });
     return uploadResult;
   } catch (error) {
