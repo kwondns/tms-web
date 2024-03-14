@@ -9,9 +9,11 @@ const PortFolioStack = lazy(() => import('pages/PortFolio/PortFolioStack'));
 const PortFolioNewProject = lazy(() => import('pages/PortFolio/PortFolioNewProject'));
 const PortFolioProjectBoard = lazy(() => import('pages/PortFolio/PortFolioProjectBoard'));
 const PortFolioEditProject = lazy(() => import('pages/PortFolio/PortfolioEditProject'));
-const TimeLinePast = lazy(() => import('pages/Dashboard'));
-const TimeLinePresent = lazy(() => import('pages/Dashboard'));
-const TimeLineFuture = lazy(() => import('pages/Dashboard'));
+const TimeLinePast = lazy(() => import('@/pages/TimeLine/TimeLinePast'));
+const TimeLineEditPast = lazy(() => import('@/pages/TimeLine/TimeLineEditPast'));
+const TimeLinePresent = lazy(() => import('@/pages/TimeLine/TimeLinePresent'));
+const TimeLineFuture = lazy(() => import('pages/TimeLine/TimeLineFuture'));
+const TimeLineFutureRecord = lazy(() => import('pages/TimeLine/TimeLineFutureRecord'));
 const BlogNewPost = lazy(() => import('pages/Dashboard'));
 export const route: RouteObject[] = [
   {
@@ -29,8 +31,10 @@ export const route: RouteObject[] = [
       { path: '/portfolio/project', element: <PortFolioProjectBoard /> },
       { path: '/portfolio/project/:id', element: <PortFolioEditProject /> },
       { path: '/timeline/past', element: <TimeLinePast /> },
+      { path: '/timeline/past/:date', element: <TimeLineEditPast /> },
       { path: '/timeline/present', element: <TimeLinePresent /> },
       { path: '/timeline/future', element: <TimeLineFuture /> },
+      { path: '/timeline/future/record', element: <TimeLineFutureRecord /> },
       { path: '/blog/new', element: <BlogNewPost /> },
     ],
   },

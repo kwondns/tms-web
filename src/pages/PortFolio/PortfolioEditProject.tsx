@@ -9,7 +9,7 @@ export default function PortfolioEditProject() {
   const { data: project, isError, isLoading } = useGetProjectOne(id);
   if (!id || !project) return <span>잘못된 요청입니다.</span>;
 
-  return project === undefined ? null : (
+  return !isLoading && project === undefined ? null : (
     <QueryHandler isError={isError} isLoading={isLoading}>
       <PortFolioProjectTemplate defaultProject={project} />
     </QueryHandler>
