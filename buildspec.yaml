@@ -4,7 +4,7 @@ phases:
     commands:
       - echo Installing source With Bun...
       - npm install -g bun
-      - ~/.bun/bin/bun install
+      - bun install
   build:
     commands:
       - echo Build started on `date`
