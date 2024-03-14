@@ -68,7 +68,18 @@ export const DeleteFetch = async <B, R>(url: string, body: B, accessToken?: stri
   const headers = { 'Content-type': 'application/json' };
   if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
   const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
-    method: 'Delete',
+    method: 'DELETE',
+    headers,
+    body: JSON.stringify(body),
+  });
+  return resultHandler(result);
+};
+
+export const PatchFetch = async <B, R>(url: string, body: B, accessToken?: string): Promise<R> => {
+  const headers = { 'Content-type': 'application/json' };
+  if (accessToken) Object.assign(headers, { Authorization: `Bearer ${accessToken}` });
+  const result = await fetch(`${import.meta.env.VITE_API_SERVER_URL}/${url}`, {
+    method: 'PATCH',
     headers,
     body: JSON.stringify(body),
   });
