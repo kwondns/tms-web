@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Suspense } from 'react';
 
 import route from '@/constants/route.constant';
 
@@ -19,7 +20,9 @@ export default function Router() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} />
+      <Suspense fallback={<span>loading...</span>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </QueryClientProvider>
   );
 }

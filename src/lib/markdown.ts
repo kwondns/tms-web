@@ -6,12 +6,12 @@ import { ClipboardEvent, DragEvent } from 'react';
 
 import { FileUpload } from '@/lib/fetch';
 
-async function fileUpload(file: File, target: string, accessToken: string, uri: string) {
+async function fileUpload(file: File, target: string, num: number, accessToken: string, uri: string) {
   toast('이미지 업로드 중...', { toastId: 'uploadImage', autoClose: false });
   try {
-    const uploadResult = await FileUpload(target, file, accessToken, uri);
+    const uploadResult = await FileUpload(target, file, accessToken, uri, num);
     toast.update('uploadImage', { type: 'success', render: '업로드 완료!', autoClose: 1500 });
-    return uploadResult[0];
+    return uploadResult;
   } catch (error) {
     toast.update('uploadImage', { type: 'error', render: '업로드 실패!', autoClose: 3000 });
     return '';
@@ -57,16 +57,20 @@ export const onImagePasted = async (
       files.push(file);
     }
   }
-  await Promise.all(
+  let result: string[] = [];
+  await Promise.allSettled(
     files.map(async (file) => {
-      const url = await fileUpload(file, target, accessToken, uri);
-      const insertedMarkdown = insertToTextArea(`![](${import.meta.env.VITE_IMAGE_URL}/${url})`);
-      if (!insertedMarkdown) {
-        return;
-      }
-      setMarkdown(insertedMarkdown);
+      const url = await fileUpload(file, target, files.length, accessToken, uri);
+      result = url;
     }),
   );
+  result.forEach((route: string) => {
+    const insertedMarkdown = insertToTextArea(`![](${import.meta.env.VITE_IMAGE_URL}/${route})`);
+    if (!insertedMarkdown) {
+      return;
+    }
+    setMarkdown(insertedMarkdown);
+  });
 };
 
 export const imgLazyLoading: Plugin = () => (tree) => {
