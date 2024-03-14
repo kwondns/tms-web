@@ -75,31 +75,3 @@
         @apply bg-background text-foreground;
     }
 }
-
-body .w-md-editor-text-pre > code,
-body .w-md-editor-text-input, body .wmde-markdown-color {
-    font-size: 18px !important;
-    line-height: 24px !important;
-}
-
-body .w-md-editor-area {
-    position: relative;
-}
-
-body.wmde-markdown-color {
-    height: 100%
-}
-
-body .w-md-editor-text {
-    position: relative;
-    overflow: auto;
-    min-height: 100% !important;
-}
-
-body .w-md-editor-text-input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-}
