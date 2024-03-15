@@ -34,7 +34,7 @@ export const useUpdatePresent = () => {
 };
 
 export const useSocketPresent = () => {
-  const socket = io('ws://localhost:3000/present');
+  const socket = io(import.meta.env.VITE_WS_SERVER_URL);
   const queryClient = useQueryClient();
   socket.on('present-update', (data) => {
     queryClient.setQueryData(['present'], data);
