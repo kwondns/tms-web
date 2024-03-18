@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 
 import { PresentType } from '@/types/TimeLine/present.type';
 import { MarkdownAtom } from '@/stores/TimeLine/present';
@@ -29,6 +30,9 @@ export default function TimeLinePresentTemplate(props: TimeLinePresentTemplatePr
   const { data } = props;
   const accessToken = useRecoilValue(AuthAtom);
   const [content, setContent] = useRecoilState(MarkdownAtom);
+  useEffect(() => {
+    if (data.content) setContent(data.content);
+  }, [data]);
 
   const { updatePresent, isUpdating } = useUpdatePresent();
   const onSubmit = (data: z.infer<typeof formSchema>) => {
