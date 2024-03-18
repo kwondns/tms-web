@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
-type ImgProps = ComponentProps<'img'>;
+type ImgProps = ComponentProps<'img'> & { target: string };
 export default function Img(props: ImgProps) {
-  const { src, alt, ...others } = props;
-  return <img alt={alt ?? src} src={`${import.meta.env.VITE_IMAGE_URL}/${src}`} {...others} />;
+  const { src, alt, target, ...others } = props;
+  return <img alt={alt ?? src} src={`https://kwondns-${target}.s3.ap-northeast-2.amazonaws.com/${src}`} {...others} />;
 }

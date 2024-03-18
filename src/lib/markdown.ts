@@ -65,7 +65,9 @@ export const onImagePasted = async (
     }),
   );
   result.forEach((route: string) => {
-    const insertedMarkdown = insertToTextArea(`![](${import.meta.env.VITE_IMAGE_URL}/${route})`);
+    const insertedMarkdown = insertToTextArea(
+      `![](https://kwondns-${target}.s3.ap-northeast-2.amazonaws.com/${route})`,
+    );
     if (!insertedMarkdown) {
       return;
     }

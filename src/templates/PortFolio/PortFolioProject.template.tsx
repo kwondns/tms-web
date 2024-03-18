@@ -165,7 +165,9 @@ export default function PortFolioProjectTemplate(props: PortFolioProjectTemplate
             )}
             name="preview_image"
           />
-          {previewImage && <Img className="max-h-[100px] object-contain" src={previewImage} alt="preview" />}
+          {previewImage && (
+            <Img className="max-h-[100px] object-contain" src={previewImage} alt="preview" target="port" />
+          )}
           <div className="flex">
             <Label className="flex-1">Front-Tag</Label>
             <Label className="flex-1">Back-Tag</Label>
