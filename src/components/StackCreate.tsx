@@ -107,7 +107,7 @@ export default function StackCreate() {
               name="tech"
             />
             <FormData form={form} name="name" placeholder="EX) React.JS" title="Name" />
-            <FormData form={form} name="URL" placeholder="공식 홈페이지 주소" title="url" />
+            <FormData form={form} name="url" placeholder="공식 홈페이지 주소" title="URL" />
             <FormField
               control={form.control}
               render={({ field: { value, onChange, ...others } }) => (
