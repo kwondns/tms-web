@@ -92,7 +92,7 @@ export const FileUpload = async (
   accessToken?: string,
   uri?: string,
   num?: number,
-) => {
+): Promise<string[]> => {
   const formData = new FormData();
 
   if (payload instanceof Array) payload.forEach((file, index) => formData.append(`file-${index}`, file));

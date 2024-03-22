@@ -27,7 +27,7 @@ export default function PortFolioProjectBoardTemplate(props: PortFolioProjectBoa
       <TableBody>
         {projects.map((project) => (
           <TableRow className="cursor-pointer" key={project.id} id={project.id} onClick={onClickRow}>
-            <TableCell className="font-medium">{project.title}</TableCell>
+            <TableCell className={`font-medium ${project.visible || 'line-through'}`}>{project.title}</TableCell>
             <TableCell>{project.shorten_content}</TableCell>
             <TableCell>
               <Img className="max-h-[80px]" src={project.preview_image} alt={project.preview_image} target="port" />

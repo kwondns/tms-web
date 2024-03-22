@@ -93,7 +93,8 @@ body.wmde-markdown-color {
 body .w-md-editor-text {
     position: relative;
     overflow: auto;
-    min-height: 100% !important;
+    min-height: 300px !important;
+    max-height: 100vw !important;
 }
 
 body .w-md-editor-text-input {

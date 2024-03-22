@@ -11,38 +11,45 @@ import { AuthAtom } from '@/stores/auth.store';
 export const useGetProjectAll = () =>
   useQuery({
     queryKey: ['project', 'all'],
-    queryFn: async () => GetFetch<ProjectType[]>('port/project'),
+    queryFn: async () => GetFetch<ProjectType[]>('port/project/visible'),
   });
 
-export const useGetProjectOne = (id: string | undefined) =>
+export const useGetProjectDetailOne = (id: string | undefined) =>
   useQuery({
     queryKey: ['project', id],
-    queryFn: async () => GetFetch<ProjectType>(`port/project/${id}`),
+    queryFn: async () => GetFetch<ProjectType>(`port/project/more/${id}`),
   });
 
 export const useUpdateProject = () => {
-  const [deleteImage, setDeleteImage] = useState('');
+  const [deleteImage, setDeleteImage] = useState<string[]>([]);
   const accessToken = useRecoilValue(AuthAtom);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { mutate: updateProject, isPending: isUpdating } = useMutation({
     mutationFn: async ({ payload, previousImage }: { payload: ProjectUpdateType; previousImage?: string }) => {
+      const { preview_image: previewImage, images, ...rest } = payload;
+      const prevImages = images.filter((image) => typeof image === 'string') as string[];
+      const newImages = images.filter((image) => image instanceof File);
+      let uploadResult: string[] = [];
+      let imagesUploadResult: string[] = [];
       if (previousImage) {
-        const { preview_image: previewImage, ...rest } = payload;
-        const uploadResult = await FileUpload('port', previewImage as File, accessToken, `project/${rest.title}`);
-        setDeleteImage(uploadResult[0]);
-        const body = { ...rest, preview_image: uploadResult[0] as string };
-        await PutFetch<ProjectType, ProjectType>(`port/project/${payload.id}`, body, accessToken);
-      } else {
-        await PutFetch<ProjectUpdateType, ProjectType>(`port/project/${payload.id}`, payload, accessToken);
+        uploadResult = await FileUpload('port', previewImage as File, accessToken, `project/${rest.title}`);
+        setDeleteImage((prev) => [...prev, uploadResult[0]]);
       }
+      if (newImages) {
+        imagesUploadResult = await FileUpload('port', newImages as File[], accessToken, `project/${rest.title}`);
+        setDeleteImage((prev) => [...prev, ...imagesUploadResult]);
+      }
+      const body = { ...rest, preview_image: previewImage, images: [...prevImages, ...imagesUploadResult] };
+      await PutFetch<ProjectUpdateType, ProjectType>(`port/project/${payload.id}`, body, accessToken);
     },
     onMutate: () => {
       toast('프로젝트 수정중...', { autoClose: false, toastId: 'project_edit' });
     },
     onError: async (error) => {
       try {
-        await DeleteFetch<{ target: string }, never>(`upload/port`, { target: deleteImage }, accessToken);
+        if (deleteImage.length > 0)
+          await DeleteFetch<{ target: string[] }, never>(`upload/port`, { target: deleteImage }, accessToken);
       } finally {
         toast.update('project_edit', { render: error.message, autoClose: 3000, type: 'error' });
       }
@@ -59,24 +66,25 @@ export const useUpdateProject = () => {
 };
 
 export const useCreateProject = () => {
-  const [deleteImage, setDeleteImage] = useState('');
+  const [deleteImage, setDeleteImage] = useState<string[]>([]);
   const accessToken = useRecoilValue(AuthAtom);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const { mutate: createProject, isPending: isCreating } = useMutation({
     mutationFn: async (payload: ProjectCreateType) => {
-      const { preview_image: previewImage, ...rest } = payload;
+      const { preview_image: previewImage, images, ...rest } = payload;
       const uploadResult = await FileUpload('port', previewImage, accessToken, `project/${rest.title}`);
-      setDeleteImage(uploadResult[0]);
-      const body = { ...rest, preview_image: uploadResult[0] as string };
+      const imagesUploadResult = await FileUpload('port', images, accessToken, `project/${rest.title}`);
+      setDeleteImage((prev) => [...prev, uploadResult[0], ...imagesUploadResult]);
+      const body = { ...rest, preview_image: uploadResult[0], images: imagesUploadResult };
       await PostFetch<Omit<ProjectType, 'id'>, ProjectType>(`port/project`, body, accessToken);
     },
     onMutate: () => {
       toast('프로젝트 생성중...', { autoClose: false, toastId: 'project' });
     },
     onError: async (error) => {
-      await DeleteFetch<{ target: string }, never>(`upload/port`, { target: deleteImage }, accessToken);
+      await DeleteFetch<{ target: string[] }, never>(`upload/port`, { target: deleteImage }, accessToken);
       toast.update('project', { render: error.message, autoClose: 3000, type: 'error' });
     },
     onSuccess: async () => {
