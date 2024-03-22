@@ -1,6 +1,3 @@
-import { visit } from 'unist-util-visit';
-import { Element } from 'hast';
-import { Plugin } from 'unified';
 import { toast } from 'react-toastify';
 import { ClipboardEvent, DragEvent } from 'react';
 
@@ -60,7 +57,7 @@ export const onImagePasted = async (
   let result: string[] = [];
   await Promise.allSettled(
     files.map(async (file) => {
-      const url = await fileUpload(file, target, files.length, accessToken, uri);
+      const url = (await fileUpload(file, target, files.length, accessToken, uri)) as string[];
       result = url;
     }),
   );
@@ -72,13 +69,5 @@ export const onImagePasted = async (
       return;
     }
     setMarkdown(insertedMarkdown);
-  });
-};
-
-export const imgLazyLoading: Plugin = () => (tree) => {
-  visit(tree, 'element', (node: Element) => {
-    if (node.tagName === 'img' && node.properties) {
-      node.properties.loading = 'lazy';
-    }
   });
 };
