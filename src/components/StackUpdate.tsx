@@ -1,14 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -17,26 +16,39 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useCreateStack } from '@/hooks/PortFolio/useStack';
+import { useCreateStack, useDeleteStack, useUpdateStack } from '@/hooks/PortFolio/useStack';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import FormData from '@/components/FormField';
+import StackStore from '@/stores/PortFolio/stack.store';
 
 const formSchema = z.object({
-  img: z.instanceof(File),
+  img: z.union([z.instanceof(File), z.string()]),
   url: z.string(),
   name: z.string().min(2, { message: '2글자 이상 입력!' }),
   category: z.string(),
   tech: z.enum(['front', 'back', 'etc']),
+  recent: z.boolean(),
 });
 
-export default function StackCreate() {
+export default function StackUpdate() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const { createStack, isPending } = useCreateStack();
+  const selectStack = useRecoilValue(StackStore);
+  const { createStack, isCreating } = useCreateStack();
+  const { updateStack, isUpdating } = useUpdateStack();
+  const { deleteStack, isDeleting } = useDeleteStack();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { url: '', name: '', category: '', tech: 'front' },
-    disabled: isPending,
+    defaultValues: { url: '', name: '', category: '', tech: 'front', recent: true },
+    disabled: isCreating || isUpdating || isDeleting,
   });
+  useEffect(() => {
+    form.setValue('img', selectStack?.img ?? '');
+    form.setValue('url', selectStack?.url ?? '');
+    form.setValue('name', selectStack?.name ?? '');
+    form.setValue('category', selectStack?.category ?? '');
+    form.setValue('tech', selectStack?.tech ?? 'front');
+    form.setValue('recent', selectStack?.recent ?? true);
+  }, [selectStack]);
   const onChangeUploadFile = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { files } = event.currentTarget;
@@ -58,10 +70,21 @@ export default function StackCreate() {
     }
   };
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    createStack(data);
+    if (selectStack) {
+      const payload = { ...data, img: data.img as string };
+      updateStack(payload);
+    } else {
+      const payload = { ...data, img: data.img as File };
+      createStack(payload);
+    }
+  };
+
+  const onClickDelete = () => {
+    const payload = form.getValues();
+    deleteStack({ ...payload, img: payload.img as string });
   };
   return (
-    <Sheet>
+    <>
       <SheetTrigger asChild>
         <Button className="w-full" variant="outline">
           추가
@@ -70,7 +93,7 @@ export default function StackCreate() {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Stack</SheetTitle>
-          <SheetDescription>스택을 추가합니다.</SheetDescription>
+          <SheetDescription>스택을 변경합니다.</SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 w-full space-y-4">
@@ -122,18 +145,36 @@ export default function StackCreate() {
               name="img"
             />
             {previewImage && <img src={previewImage} alt="preview" />}
+            <FormField
+              control={form.control}
+              render={({ field: { value, ...others } }) => (
+                <FormItem>
+                  <FormLabel>최근 사용</FormLabel>
+                  <FormControl>
+                    <Input type="checkbox" defaultChecked={value} {...others} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+              name="recent"
+            />
             <FormData form={form} name="category" placeholder="EX) Design, Server Infra" title="Category" />
             <SheetFooter>
-              <SheetClose asChild>
-                <Button type="submit" className="w-full">
-                  생성하기
-                </Button>
-              </SheetClose>
+              <Button type="submit" className="w-full">
+                적용하기
+              </Button>
+              <Button
+                variant="destructive"
+                className="w-full"
+                onClick={onClickDelete}
+                disabled={!selectStack || isDeleting}
+              >
+                삭제하기
+              </Button>
             </SheetFooter>
           </form>
         </Form>
       </SheetContent>
-    </Sheet>
+    </>
   );
 }
-StackCreate.defaultProps = { isEdit: false };

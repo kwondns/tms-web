@@ -28,6 +28,7 @@ export default function StackByTech(props: StackByTechProps) {
             img={value.img}
             name={value.name}
             url={value.url}
+            tech={tech}
           />
         ))}
       </div>

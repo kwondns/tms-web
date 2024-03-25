@@ -1,13 +1,18 @@
 export type StackGetType = {
-  front: StacksType[];
-  back: StacksType[];
-  etc: StacksType[];
+  recent: {
+    front: StacksType[];
+    back: StacksType[];
+    etc: StacksType[];
+  };
+  other: StackType[];
 };
 export type StacksType = {
   name: string[];
   url: string[];
   img: string[];
+  recent: boolean[];
   category: string;
+  tech: 'front' | 'back' | 'etc';
 };
 
 export type StackType = {
@@ -15,6 +20,8 @@ export type StackType = {
   url: string;
   img: string;
   category: string;
+  recent: boolean;
+  tech: 'front' | 'back' | 'etc';
 };
 
 export type StackCreateType = {
@@ -22,5 +29,15 @@ export type StackCreateType = {
   url: string;
   img: File;
   category: string;
+  recent: boolean;
+  tech: 'front' | 'back' | 'etc';
+};
+
+export type StackUpdateType = {
+  name: string;
+  url: string;
+  img: string;
+  category: string;
+  recent: boolean;
   tech: 'front' | 'back' | 'etc';
 };
