@@ -122,7 +122,7 @@ export default function PortFolioProjectTemplate(props: PortFolioProjectTemplate
     else setBack(value);
   };
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (['Enter', ','].includes(event.key)) {
+    if (['Enter', ','].includes(event.key) && !event.nativeEvent.isComposing) {
       const { id, value } = event.currentTarget;
       event.preventDefault();
       const inputValue = value.trim();
