@@ -15,6 +15,7 @@ const TimeLinePresent = lazy(() => import('@/pages/TimeLine/TimeLinePresent'));
 const TimeLineFuture = lazy(() => import('pages/TimeLine/TimeLineFuture'));
 const TimeLineFutureRecord = lazy(() => import('pages/TimeLine/TimeLineFutureRecord'));
 const BlogNewPost = lazy(() => import('pages/Dashboard'));
+const BlogPostList = lazy(() => import('pages/Blog/BlogPostList'));
 export const route: RouteObject[] = [
   {
     path: '/',

@@ -36,4 +36,5 @@ export const TimeLineContent: { title: string; href: string; description: string
 
 export const BlogContent: { title: string; href: string; description: string }[] = [
   { title: 'New Post', href: '/blog/new', description: '새로운 글 작성하기' },
+  { title: 'Post List', href: '/blog/list', description: '게시글 목록' },
 ];
