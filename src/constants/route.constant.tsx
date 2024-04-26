@@ -14,8 +14,9 @@ const TimeLineEditPast = lazy(() => import('@/pages/TimeLine/TimeLineEditPast'))
 const TimeLinePresent = lazy(() => import('@/pages/TimeLine/TimeLinePresent'));
 const TimeLineFuture = lazy(() => import('pages/TimeLine/TimeLineFuture'));
 const TimeLineFutureRecord = lazy(() => import('pages/TimeLine/TimeLineFutureRecord'));
-const BlogNewPost = lazy(() => import('pages/Dashboard'));
+const BlogNewPost = lazy(() => import('pages/Blog/BlogNewPost'));
 const BlogPostList = lazy(() => import('pages/Blog/BlogPostList'));
+const BlogPost = lazy(() => import('pages/Blog/BlogPost'));
 export const route: RouteObject[] = [
   {
     path: '/',
@@ -37,6 +38,8 @@ export const route: RouteObject[] = [
       { path: '/timeline/future', element: <TimeLineFuture /> },
       { path: '/timeline/future/record', element: <TimeLineFutureRecord /> },
       { path: '/blog/new', element: <BlogNewPost /> },
+      { path: '/blog/list', element: <BlogPostList /> },
+      { path: '/blog/:id', element: <BlogPost /> },
     ],
   },
 ];
