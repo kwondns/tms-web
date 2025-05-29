@@ -12,14 +12,14 @@ phases:
   post_build:
     commands:
       # copy the contents of /dist to S3
-      - aws s3 cp --recursive --acl public-read ./dist s3://tms-source/
+      - aws s3 cp --recursive --acl public-read ./dist s3://tms-web-site/
 
       # set the cache-control headers for index.html to prevent
       # browser caching
       - >
         aws s3 cp --acl public-read
         --cache-control="max-age=0, no-cache, no-store, must-revalidate"
-        ./dist/index.html s3://tms-source/
+        ./dist/index.html s3://tms-web-site/
 artifacts:
   files:
     - '**/*'
