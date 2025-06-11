@@ -71,7 +71,7 @@ export default function StackUpdate() {
   };
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     if (selectStack) {
-      const payload = { ...data, img: data.img as string };
+      const payload = {...data, img: data.img as File | string};
       updateStack(payload);
     } else {
       const payload = { ...data, img: data.img as File };
@@ -90,7 +90,7 @@ export default function StackUpdate() {
           추가
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent style={{overflow: 'auto'}}>
         <SheetHeader>
           <SheetTitle>Stack</SheetTitle>
           <SheetDescription>스택을 변경합니다.</SheetDescription>

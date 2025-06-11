@@ -36,8 +36,10 @@ export type StackCreateType = {
 export type StackUpdateType = {
   name: string;
   url: string;
-  img: string;
+  img: File | string;
   category: string;
   recent: boolean;
   tech: 'front' | 'back' | 'etc';
 };
+
+export type StackDeleteType = Omit<StackUpdateType, 'img'> & { img: string };

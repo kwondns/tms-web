@@ -4,7 +4,13 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 
 import { DeleteFetch, FileUpload, GetFetch, PostFetch, PutFetch } from '@/lib/fetch';
-import { StackCreateType, StackGetType, StackType, StackUpdateType } from '@/types/PortFolio/stack.type';
+import {
+  StackCreateType,
+  StackDeleteType,
+  StackGetType,
+  StackType,
+  StackUpdateType,
+} from '@/types/PortFolio/stack.type';
 import { AuthAtom } from '@/stores/auth.store';
 
 export const useGetStack = () =>
@@ -17,7 +23,7 @@ export const useCreateStack = () => {
   const { mutate: createStack, isPending: isCreating } = useMutation({
     mutationFn: async (payload: StackCreateType) => {
       const { img, ...rest } = payload;
-      const uploadResult = await FileUpload('port', img, accessToken, 'stack');
+      const uploadResult = await FileUpload('portfolio', img, accessToken, 'stack');
       setDeleteImage(uploadResult[0]);
       const body = { ...rest, img: uploadResult[0] as string };
       await PostFetch<StackType, StackType>(`port/stack/${payload.tech}`, body, accessToken);
@@ -40,14 +46,23 @@ export const useCreateStack = () => {
 export const useUpdateStack = () => {
   const accessToken = useRecoilValue(AuthAtom);
   const queryClient = useQueryClient();
+  const [deleteImage, setDeleteImage] = useState('');
   const { mutate: updateStack, isPending: isUpdating } = useMutation({
     mutationFn: async (payload: StackUpdateType) => {
-      await PutFetch<StackType, StackType>(`port/stack/${payload.tech}`, payload, accessToken);
+      const dto = {...payload};
+      if (payload.img instanceof File) {
+        const {img} = payload;
+        const uploadResult = await FileUpload('portfolio', img, accessToken, 'stack');
+        setDeleteImage(uploadResult[0]);
+        Object.assign(dto, {img: uploadResult[0]});
+      }
+      await PutFetch<StackType, StackType>(`port/stack/${payload.tech}`, dto as StackType, accessToken);
     },
     onMutate: () => {
       toast('스택 변경중...', { autoClose: false, toastId: 'stack_update' });
     },
     onError: async (error) => {
+      await DeleteFetch<{ target: string }, never>(`port/stack`, {target: deleteImage}, accessToken);
       toast.update('stack_update', { render: error.message, autoClose: 3000, type: 'error' });
     },
     onSuccess: async () => {
@@ -62,7 +77,7 @@ export const useDeleteStack = () => {
   const accessToken = useRecoilValue(AuthAtom);
   const queryClient = useQueryClient();
   const { mutate: deleteStack, isPending: isDeleting } = useMutation({
-    mutationFn: async (payload: StackUpdateType) => {
+    mutationFn: async (payload: StackDeleteType) => {
       await DeleteFetch<StackType, never>(`port/stack/${payload.tech}`, payload, accessToken);
     },
     onMutate: () => {
