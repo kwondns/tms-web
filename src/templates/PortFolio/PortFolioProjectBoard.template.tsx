@@ -30,7 +30,12 @@ export default function PortFolioProjectBoardTemplate(props: PortFolioProjectBoa
             <TableCell className={`font-medium ${project.visible || 'line-through'}`}>{project.title}</TableCell>
             <TableCell>{project.shorten_content}</TableCell>
             <TableCell>
-              <Img className="max-h-[80px]" src={project.preview_image} alt={project.preview_image} target="port" />
+              <Img
+                className="max-h-[80px]"
+                src={project.preview_image}
+                alt={project.preview_image}
+                target="portfolio"
+              />
             </TableCell>
             <TableCell className="text-right">{project.date}</TableCell>
           </TableRow>

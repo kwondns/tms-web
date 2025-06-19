@@ -15,7 +15,7 @@ export default function DNDImg(props: DNDImgProps) {
   return (
     <img
       className="max-w-[300px] rounded-xl"
-      src={src.includes('project') ? `https://kwondns-port.s3.ap-northeast-2.amazonaws.com/${src}` : src}
+      src={src.includes('project') ? `https://tms-portfolio.s3.ap-northeast-2.amazonaws.com/${src}` : src}
       alt="e"
       ref={setNodeRef}
       style={style}

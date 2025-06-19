@@ -167,6 +167,7 @@ export default function PortFolioProjectTemplate(props: PortFolioProjectTemplate
     }
   };
   const onSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(defaultProject);
     if (defaultProject) {
       const request = {
         payload: { ...data, id: defaultProject.id },
@@ -237,7 +238,10 @@ export default function PortFolioProjectTemplate(props: PortFolioProjectTemplate
   return (
     <div className="flex flex-1 flex-col pb-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex size-full flex-1 flex-col space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, (error) => console.log(error))}
+          className="flex size-full flex-1 flex-col space-y-4"
+        >
           <div className="flex gap-x-4">
             <FormData className="flex-1" form={form} placeholder="제목입력" title="제목" name="title" />
             <FormData
@@ -262,7 +266,7 @@ export default function PortFolioProjectTemplate(props: PortFolioProjectTemplate
             name="preview_image"
           />
           {previewImage && previewImage?.includes('project') ? (
-            <Img className="max-h-[100px] object-contain" src={previewImage} alt="preview" target="port" />
+            <Img className="max-h-[100px] object-contain" src={previewImage} alt="preview" target="portfolio" />
           ) : (
             <img className="max-h-[100px]" src={previewImage as string} alt="preview" />
           )}
